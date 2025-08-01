@@ -1,5 +1,6 @@
 import { products } from "../../data/products.js";
 import { cart, cartQuantity } from "../../data/cart.js";
+import { formatCurrency, getTotalCost, calcTotalShippingFee} from "../utils/money.js";
 
 document.querySelector('.return-to-home-link').textContent = `${cartQuantity} items`;
 
@@ -31,7 +32,7 @@ cart.forEach(cartItem => {
                   ${product.name}
                 </div>
                 <div class="product-price">
-                  ${(product.priceCents / 100).toFixed(2)}
+                  $${formatCurrency(product.priceCents)}
                 </div>
                 <div class="product-quantity">
                   <span>
@@ -52,8 +53,8 @@ cart.forEach(cartItem => {
                 </div>
                 <div class="delivery-option">
                   <input type="radio" checked
-                    class="delivery-option-input"
-                    name="delivery-option-${product.id}">
+                    class="delivery-option-input js-delivery-option"
+                    name="delivery-option-${product.id}" data-price-cents="free">
                   <div>
                     <div class="delivery-option-date">
                       Tuesday, June 21
@@ -65,8 +66,8 @@ cart.forEach(cartItem => {
                 </div>
                 <div class="delivery-option">
                   <input type="radio"
-                    class="delivery-option-input"
-                    name="delivery-option-${product.id}">
+                    class="delivery-option-input js-delivery-option"
+                    name="delivery-option-${product.id}" data-price-cents="499">
                   <div>
                     <div class="delivery-option-date">
                       Wednesday, June 15
@@ -78,8 +79,8 @@ cart.forEach(cartItem => {
                 </div>
                 <div class="delivery-option">
                   <input type="radio"
-                    class="delivery-option-input"
-                    name="delivery-option-${product.id}">
+                    class="delivery-option-input js-delivery-option"
+                    name="delivery-option-${product.id}" data-price-cents="999">
                   <div>
                     <div class="delivery-option-date">
                       Monday, June 13
@@ -96,10 +97,33 @@ cart.forEach(cartItem => {
     productsCostCents += (product.priceCents * cartItem.quantity);
 });
 console.log(productsCostCents);
-
 document.querySelector('.order-summary').innerHTML = cartHTML;
 
 // Updates the order summary
+let totalShippingFee = calcTotalShippingFee(cart);
+//productsCostCent
+let subTotal = productsCostCents + totalShippingFee;
+let tax = subTotal * 0.10;
+
+
 document.querySelector('.payment-summary-row').textContent = `Items (${cartQuantity})`;
-document.querySelector('.product-cost').textContent = `$${(productsCostCents / 100).toFixed(2)}`;
+document.querySelector('.product-cost').textContent = `$${formatCurrency(subTotal)}`;
+
+document.querySelector('.total-sf').textContent = `$${formatCurrency(totalShippingFee)}`;
+document.querySelector('.tax-fee').textContent = `$${formatCurrency(tax)}`;
+document.querySelector('.order-total').textContent = `$${formatCurrency(getTotalCost(totalShippingFee, productsCostCents, tax))}`;
+
+document.querySelectorAll('.js-delivery-option').forEach(radioButton => {
+    radioButton.addEventListener('change', () => {
+        totalShippingFee = calcTotalShippingFee(cart);
+        subTotal = productsCostCents + totalShippingFee;
+        tax = subTotal * 0.10 ;
+
+        document.querySelector('.total-sf').textContent = `$${formatCurrency(totalShippingFee)}`;
+        document.querySelector('.order-total').textContent = `$${formatCurrency(getTotalCost(totalShippingFee, productsCostCents, tax))}`;
+        document.querySelector('.product-cost').textContent = `$${((productsCostCents + totalShippingFee) / 100).toFixed(2)}`;
+        console.log(totalShippingFee / 100);
+        document.querySelector('.tax-fee').textContent = `$${formatCurrency(tax)}`;
+    });
+});
 
