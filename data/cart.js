@@ -1,4 +1,24 @@
-export const cart = [];
+export const cart = getCartItemsFromStorage();
+export let cartQuantity = 0;
+initCartQuantity();
+
+function getCartItemsFromStorage() {
+    try{
+        const cartData = localStorage.getItem('cart');
+        if(!cartData) return [];
+        return JSON.parse(cartData);
+    }
+    catch (e) {
+        console.log('Invalid JSON or localStorage', e);
+        return [];
+    }
+}
+
+function initCartQuantity(){
+    cart.forEach(item => {
+        cartQuantity += item.quantity;
+    });
+}
 
 export function addToCart(product) {
     let matchedItem;
@@ -13,4 +33,5 @@ export function addToCart(product) {
     } else {
         cart.push(product);
     }
+    cartQuantity++;
 }
