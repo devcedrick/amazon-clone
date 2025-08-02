@@ -7,10 +7,10 @@ export function getTotalCost(totalSF, productsCostCents, taxCents){
 }
 
 function getShippingFee(selected){
-    if(selected.dataset.priceCents === 'free')
+    if(selected.value === 'free')
         return 0;
-    else if (selected.dataset.priceCents === '499' || selected.dataset.priceCents === '999') 
-        return parseInt(selected.dataset.priceCents);
+    else if (selected.value === '499' || selected.value === '999') 
+        return parseInt(selected.value);
     else
         return -1;
 }

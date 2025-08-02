@@ -1,6 +1,6 @@
 export const cart = getCartItemsFromStorage();
-export let cartQuantity = 0;
-initCartQuantity();
+
+export function getCartQuantity() { return cart.reduce((sum, item) => sum + item.quantity, 0);}
 
 function getCartItemsFromStorage() {
     try{
@@ -33,5 +33,4 @@ export function addToCart(product) {
     } else {
         cart.push(product);
     }
-    cartQuantity++;
 }
