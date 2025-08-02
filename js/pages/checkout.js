@@ -1,6 +1,7 @@
 import { findProduct } from "../../data/products.js";
-import { cart, getCartQuantity, cartItemsMap, findCartItems} from "../../data/cart.js";
+import { cart, getCartQuantity, findCartItems} from "../../data/cart.js";
 import { formatCurrency, getTotalCost, calcTotalShippingFee} from "../utils/money.js";
+import { setDeliveryDate, getFreeShippingDate, getStandardShippingDate, getExpressShippingDate } from "../utils/date.js";
 
 // initialize the page
 let productsCostCents = 0;
@@ -21,8 +22,8 @@ function generateCartItemsHTML() {
         const product = findProduct(cartItem.productId);
         cartHTML += `
             <div class="cart-item-container">
-                <div class="delivery-date">
-                Delivery date: Tuesday, June 21
+                <div class="delivery-date" id="${product.id}">
+                Delivery date: 
                 </div>
 
                 <div class="cart-item-details-grid">
@@ -59,7 +60,7 @@ function generateCartItemsHTML() {
                         name="delivery-option-${product.id}" value="free" data-product-id="${product.id}">
                     <div>
                         <div class="delivery-option-date">
-                        Tuesday, June 21
+                            ${getFreeShippingDate()}
                         </div>
                         <div class="delivery-option-price">
                         FREE Shipping
@@ -72,7 +73,7 @@ function generateCartItemsHTML() {
                         name="delivery-option-${product.id}" value="499" data-product-id="${product.id}">
                     <div>
                         <div class="delivery-option-date">
-                        Wednesday, June 15
+                        ${getStandardShippingDate()}
                         </div>
                         <div class="delivery-option-price">
                         $4.99 - Shipping
@@ -85,7 +86,7 @@ function generateCartItemsHTML() {
                         name="delivery-option-${product.id}" value="999" data-product-id="${product.id}">
                     <div>
                         <div class="delivery-option-date">
-                        Monday, June 13
+                        ${getExpressShippingDate()}
                         </div>
                         <div class="delivery-option-price">
                         $9.99 - Shipping
@@ -132,6 +133,8 @@ function attachCartEventListeners() {
             if(item)
                 item.shippingOption = radioButton.value;
 
+            setDeliveryDate(radioButton.value, document.getElementById(item.productId));
+
             totalShippingFee = calcTotalShippingFee(cart);
             subTotal = productsCostCents + totalShippingFee;
             tax = subTotal * 0.10 ;
@@ -171,6 +174,9 @@ function setRadioButton(item) {
         document.querySelector(`input[name="delivery-option-${item.productId}"][value="free"]`).checked = true;
         item.shippingOption = 'free';
     }
+    
+    const deliveryDate = document.getElementById(item.productId);
+    setDeliveryDate(radioButton.value, deliveryDate);
 }
  
 
