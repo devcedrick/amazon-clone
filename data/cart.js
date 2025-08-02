@@ -1,4 +1,5 @@
 export const cart = getCartItemsFromStorage();
+export const cartItemsMap = updateCartItemsMap();
 
 export function getCartQuantity() { return cart.reduce((sum, item) => sum + item.quantity, 0);}
 
@@ -34,3 +35,13 @@ export function addToCart(product) {
         cart.push(product);
     }
 }
+
+function updateCartItemsMap() {
+    const map = new Map();
+    cart.forEach(item => {
+        map.set(item.productId, item);
+    });
+    return map;
+}
+
+export function findCartItems(id) { return cartItemsMap.get(id); }

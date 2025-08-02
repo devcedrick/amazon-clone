@@ -658,3 +658,16 @@ export const products = [
     ]
   }
 ];
+
+const productsMap = updateProductMap();
+
+function updateProductMap() {
+  const map = new Map();
+  map.clear();
+  products.forEach(product => {
+    map.set(product.id, product);
+  });
+  return map;
+}
+
+export function findProduct(key){ return productsMap.get(key); }

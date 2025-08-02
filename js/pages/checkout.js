@@ -1,15 +1,6 @@
-import { products } from "../../data/products.js";
-import { cart, getCartQuantity } from "../../data/cart.js";
+import { findProduct } from "../../data/products.js";
+import { cart, getCartQuantity, cartItemsMap, findCartItems} from "../../data/cart.js";
 import { formatCurrency, getTotalCost, calcTotalShippingFee} from "../utils/money.js";
-
-let productMap = new Map();
-products.forEach(product => {
-    productMap.set(product.id, product);
-});
-
-function findProduct(key){ return productMap.get(key); }
-
-let cartItemsMap = new Map();
 
 // initialize the page
 let productsCostCents = 0;
@@ -110,7 +101,7 @@ function generateCartItemsHTML() {
     productsCostCents = productCost;
     document.querySelector('.order-summary').innerHTML = cartHTML;
 
-    updateCartItemsMap();
+    //updateCartItemsMap();
 
     cart.forEach(cartItem => {
         setRadioButton(cartItem);
@@ -180,21 +171,8 @@ function setRadioButton(item) {
         document.querySelector(`input[name="delivery-option-${item.productId}"][value="free"]`).checked = true;
         item.shippingOption = 'free';
     }
-
-    console.log(`SHIPPING MODE IS ${savedOption}`);
 }
-
-function updateCartItemsMap() {
-    cartItemsMap.clear();
-    cart.forEach(item => {
-        cartItemsMap.set(item.productId, item);
-    });
-}
-
-updateCartItemsMap();
-
-
-function findCartItems(id) { return cartItemsMap.get(id); } 
+ 
 
 
 
