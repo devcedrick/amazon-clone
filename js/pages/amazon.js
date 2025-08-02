@@ -62,13 +62,12 @@ document.querySelector('.products-grid').innerHTML = productsHTML;
 
 document.querySelectorAll('.js-add-to-cart-button').forEach(button => {
     button.addEventListener('click', () => {
-        const productName = button.dataset.productName;
         const productId = button.dataset.productId;
 
         const product = {
             productId: productId,
             quantity: 1,
-            shippingOption: 'free'
+            deliveryOptionId: '1'
         };
         addToCart(product);
 

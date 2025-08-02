@@ -1,37 +1,26 @@
+import { getDeliveryPrice } from "../../data/deliveryOptions.js";
+import { findProduct } from "../../data/products.js";
+
 export function formatCurrency(num) {
-    return (num / 100).toFixed(2);
+    return (Math.round(num) / 100).toFixed(2);
 }
+
+export function getProductsCost(cart) {
+    return cart.reduce((sum, item) => {
+        let product = findProduct(item.productId);
+        return sum + (product.priceCents * item.quantity);
+    }, 0);
+}
+
 
 export function getTotalCost(totalSF, productsCostCents, taxCents){
     return totalSF + productsCostCents + taxCents;
 }
 
-function getShippingFee(selected){
-    if(selected.value === 'free')
-        return 0;
-    else if (selected.value === '499' || selected.value === '999') 
-        return parseInt(selected.value);
-    else
-        return -1;
-}
-
 let isAllowedtoPlaceOrder = true;
 
-export function calcTotalShippingFee(cart){
-    let totalSF = 0;
-    cart.forEach(item => {
-        const selected = document.querySelector(`input[name="delivery-option-${item.productId}"]:checked`);
-        
-        try{
-            if(getShippingFee(selected) === -1){
-                totalSF += 0;
-                throw new Error();
-            } else {
-                totalSF += getShippingFee(selected);
-            }
-        } catch {
-            isAllowedtoPlaceOrder = false;
-        }
-    });
-    return totalSF;
+export function getTotalShippingFee(cart){
+    return cart.reduce((sum, item) => {
+        return sum + getDeliveryPrice(item.deliveryOptionId);
+    }, 0);
 }

@@ -1,4 +1,4 @@
-export const cart = getCartItemsFromStorage();
+export let cart = getCartItemsFromStorage();
 export const cartItemsMap = updateCartItemsMap();
 
 export function getCartQuantity() { return cart.reduce((sum, item) => sum + item.quantity, 0);}
@@ -45,3 +45,12 @@ function updateCartItemsMap() {
 }
 
 export function findCartItems(id) { return cartItemsMap.get(id); }
+
+export function saveToLocalStorage() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+export function removeItem(removeId) {
+    cart = cart.filter(item => item.productId !== removeId)
+    saveToLocalStorage();
+}
