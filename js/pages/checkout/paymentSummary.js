@@ -1,7 +1,7 @@
 import { getProductsCost, getTotalShippingFee, getTotalCost, formatCurrency } from "../../utils/money.js";
 import { cart, getCartQuantity } from "../../../data/cart.js"
 
-export function updateOrderSummary () {
+export function updatePaymentSummary () {
     let productsCostCents = getProductsCost(cart);
     let totalShippingFee = getTotalShippingFee(cart);
     let subTotal = productsCostCents + totalShippingFee;

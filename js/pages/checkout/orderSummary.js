@@ -2,7 +2,7 @@ import { findProduct } from "../../../data/products.js";
 import { cart, getCartQuantity, findCartItems, saveToLocalStorage, removeItem} from "../../../data/cart.js";
 import { formatCurrency} from "../../utils/money.js";
 import { getFreeShippingDate, getStandardShippingDate, getExpressShippingDate, getShippingDate } from "../../utils/date.js";
-import { updateOrderSummary } from "./paymentSummary.js";
+import { updatePaymentSummary } from "./paymentSummary.js";
 import { getDeliveryPrice, getSelectedDeliveryOption } from "../../../data/deliveryOptions.js";
 
 export function renderOrderSummary(){
@@ -108,7 +108,7 @@ export function handleEventListeners() {
             document.querySelector('.return-to-home-link').textContent = `${getCartQuantity()} items`;
 
             setDeliveryDate(item);
-            updateOrderSummary();
+            updatePaymentSummary();
         });
     })
 
@@ -118,6 +118,8 @@ export function handleEventListeners() {
             // remove element in that specific part
             removeItem(link.id);
             renderOrderSummary();
+            updatePaymentSummary();
+            document.querySelector('.return-to-home-link').textContent = `${getCartQuantity()} items`;
         });
     });
 }
