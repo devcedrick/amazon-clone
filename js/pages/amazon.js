@@ -64,12 +64,7 @@ document.querySelectorAll('.js-add-to-cart-button').forEach(button => {
     button.addEventListener('click', () => {
         const productId = button.dataset.productId;
 
-        const product = {
-            productId: productId,
-            quantity: 1,
-            deliveryOptionId: '1'
-        };
-        addToCart(product);
+        addToCart(productId);
 
         // Save cart data
         localStorage.setItem('cart', JSON.stringify(cart));
