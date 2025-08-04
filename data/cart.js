@@ -23,12 +23,6 @@ export function loadFromLocalStorage() {
     }
 }
 
-function initCartQuantity(){
-    cart.forEach(item => {
-        cartQuantity += item.quantity;
-    });
-}
-
 export function addToCart(id) {
     let matchedItem;
     cart.forEach(item => {

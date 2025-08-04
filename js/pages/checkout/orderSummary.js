@@ -2,7 +2,7 @@ import { findProduct } from "../../../data/products.js";
 import { cart, getCartQuantity, findCartItems, saveToLocalStorage, removeItem} from "../../../data/cart.js";
 import { formatCurrency} from "../../utils/money.js";
 import { getFreeShippingDate, getStandardShippingDate, getExpressShippingDate, getShippingDate } from "../../utils/date.js";
-import { updatePaymentSummary } from "./paymentSummary.js";
+import { renderPaymentSummary } from "./paymentSummary.js";
 import { getDeliveryPrice, getSelectedDeliveryOption } from "../../../data/deliveryOptions.js";
 
 export function renderOrderSummary(){
@@ -10,7 +10,7 @@ export function renderOrderSummary(){
     cart.forEach(cartItem => {
         const product = findProduct(cartItem.productId);
         cartHTML += `
-            <div class="cart-item-container">
+            <div class="cart-item-container js-cart-item-container-${product.id}">
                 <div class="delivery-date" id="${product.id}">
                 Delivery date: 
                 </div>
@@ -26,7 +26,7 @@ export function renderOrderSummary(){
                     <div class="product-price">
                     $${formatCurrency(product.priceCents)}
                     </div>
-                    <div class="product-quantity">
+                    <div class="product-quantity product-quantity-${product.id}">
                     <span>
                         Quantity: <span class="quantity-label">${cartItem.quantity}</span>
                     </span>
@@ -108,7 +108,7 @@ export function handleEventListeners() {
             document.querySelector('.return-to-home-link').textContent = `${getCartQuantity()} items`;
 
             setDeliveryDate(item);
-            updatePaymentSummary();
+            renderPaymentSummary();
         });
     })
 
@@ -118,7 +118,7 @@ export function handleEventListeners() {
             // remove element in that specific part
             removeItem(link.id);
             renderOrderSummary();
-            updatePaymentSummary();
+            renderPaymentSummary();
             document.querySelector('.return-to-home-link').textContent = `${getCartQuantity()} items`;
         });
     });
