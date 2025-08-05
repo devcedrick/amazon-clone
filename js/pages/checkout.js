@@ -2,13 +2,16 @@
 import { getCartQuantity } from "../../data/cart.js";
 import { renderOrderSummary } from "./checkout/orderSummary.js";
 import { renderPaymentSummary } from "./checkout/paymentSummary.js";
+// import '../../data/backend-practice.js';
+import { loadProducts } from "../../data/products.js";
 
 
-document.querySelector('.return-to-home-link').textContent = `${getCartQuantity()} items`;
+loadProducts(() => {
+    document.querySelector('.return-to-home-link').textContent = `${getCartQuantity()} items`;
 
-
-renderOrderSummary();
-renderPaymentSummary();
+    renderOrderSummary();
+    renderPaymentSummary();
+});
 
 //=========================
 // initialize the page
