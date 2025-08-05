@@ -1,6 +1,6 @@
 import { renderOrderSummary } from "../js/pages/checkout/orderSummary.js";
 import { loadFromLocalStorage, cart } from "../data/cart.js";
-import { loadProducts } from "../data/products.js";
+import { fetchProducts } from "../data/products.js";
 
 describe("Test Suite: renderOrderSummary", () => {
     const productId = [
@@ -10,7 +10,7 @@ describe("Test Suite: renderOrderSummary", () => {
     ];
 
     beforeAll((done) => {
-        loadProducts(() => {
+        fetchProducts().then(() => {
             done();
         });
     });
