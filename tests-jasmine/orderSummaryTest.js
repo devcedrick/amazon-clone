@@ -1,5 +1,6 @@
 import { renderOrderSummary } from "../js/pages/checkout/orderSummary.js";
 import { loadFromLocalStorage, cart } from "../data/cart.js";
+import { loadProducts } from "../data/products.js";
 
 describe("Test Suite: renderOrderSummary", () => {
     const productId = [
@@ -7,6 +8,12 @@ describe("Test Suite: renderOrderSummary", () => {
         "8c9c52b5-5a19-4bcb-a5d1-158a74287c53",
         "3fdfe8d6-9a15-4979-b459-585b0d0545b9"
     ];
+
+    beforeAll((done) => {
+        loadProducts(() => {
+            done();
+        });
+    });
 
     beforeEach(() => {
         spyOn(localStorage, 'getItem').and.callFake(() => {
