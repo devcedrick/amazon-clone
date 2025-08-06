@@ -2,6 +2,11 @@ import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 
 const today = dayjs();
 
+export function formatOrderDate(isoString) {
+    const date = dayjs(isoString);
+    return date.format('MMMM DD');
+}
+
 export function getFreeShippingDate() {
     return today.add(7, 'day').format('dddd, MMMM DD');
 }

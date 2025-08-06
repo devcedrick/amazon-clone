@@ -14,6 +14,8 @@ class Product {
     this.name = productDetails.name;
     this.rating = productDetails.rating;
     this.priceCents = productDetails.priceCents;
+
+    
   }
 
   getStarsURL() {
@@ -26,6 +28,10 @@ class Product {
 
   extraInfoHTML() {
     return ``;
+  }
+
+  getImagePath() {
+    return this.image;
   }
 
 }
@@ -75,6 +81,7 @@ function updateProductMap() {
   return map;
 }
 
+// Will return a product object
 export function findProduct(key){ return productsMap.get(key); }
 
 
