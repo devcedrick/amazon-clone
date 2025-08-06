@@ -51,20 +51,15 @@ fetchProducts().then(() => {
   productsMap = updateProductMap();
 });
 
-export function fetchProducts() {
-  const promise = fetch('https://supersimplebackend.dev/products')
-  .then(response => {
-    return response.json()
-  })
-  .then(productData => {
-    products = productData.map(productDetails => {
-      if(productDetails.type === 'clothing')
-        return new Clothing(productDetails);
-      return new Product(productDetails);
-    });
+export async function fetchProducts() {
+  console.log('load products');
+  const response = await fetch('https://supersimplebackend.dev/products');
+  const data  = await response.json();
+  products = data.map(productDetails => {
+    if(productDetails.type === 'clothing')
+      return new Clothing(productDetails);
+    return new Product(productDetails);
   });
-
-  return promise;
 }
 
 function updateProductMap() {
