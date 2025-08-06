@@ -52,14 +52,18 @@ fetchProducts().then(() => {
 });
 
 export async function fetchProducts() {
-  console.log('load products');
-  const response = await fetch('https://supersimplebackend.dev/products');
-  const data  = await response.json();
-  products = data.map(productDetails => {
-    if(productDetails.type === 'clothing')
-      return new Clothing(productDetails);
-    return new Product(productDetails);
-  });
+  try {
+    console.log('load products');
+    const response = await fetch('https://supersimplebackend.dev/products');
+    const data  = await response.json();
+    products = data.map(productDetails => {
+      if(productDetails.type === 'clothing')
+        return new Clothing(productDetails);
+      return new Product(productDetails);
+    });
+  } catch (e) {
+    console.log('Unexpected error. Please try again later', error);
+  }
 }
 
 function updateProductMap() {
